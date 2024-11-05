@@ -1,0 +1,2 @@
+Withdrawal: $500 | Checking Balance: $4500
+Deposit: $1000 | Checking Balance: $5500

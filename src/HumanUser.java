@@ -1,10 +1,14 @@
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class HumanUser {
     private int name;
-    public int bankCard;
-    public int pinNumber;
+    private int bankCard;
+    private int pinNumber;
     private int checkingAccount;
     private int savingAccount;
 
+    // Constructor
     public HumanUser(int name, int bankCard, int pinNumber, int checkingAccount, int savingAccount) {
         this.name = name;
         this.bankCard = bankCard;
@@ -13,7 +17,7 @@ public class HumanUser {
         this.savingAccount = savingAccount;
     }
 
-    // getter methods for the private methods
+    // Getters for accessing private attributes
     public int getBankCard() {
         return bankCard;
     }
@@ -22,31 +26,36 @@ public class HumanUser {
         return pinNumber;
     }
 
+    // Method to display balance
     public void balance() {
-        System.out.println("Balance: " + checkingAccount);
-        System.out.println("Balance Savings account: " + savingAccount);
+        System.out.println("Checking account balance: $" + checkingAccount);
+        System.out.println("Savings account balance: $" + savingAccount);
     }
 
+    // Method to withdraw funds
     public void withdrawFunds(int amount) {
         if (checkingAccount >= amount) {
             checkingAccount -= amount;
-            System.out.println("You have withdraw " + amount + " from the main account.");
+            System.out.println("Withdrawn $" + amount + " from checking account.");
+            logTransaction("Withdrawal: $" + amount);
         } else {
-            System.out.println("Not enough founds.");
+            System.out.println("Insufficient funds for withdrawal.");
         }
     }
 
+    // Method to deposit funds
     public void depositFunds(int amount) {
         checkingAccount += amount;
-        System.out.println("You deposit " + amount + " in the main account.");
+        System.out.println("Deposited $" + amount + " into checking account.");
+        logTransaction("Deposit: $" + amount);
     }
 
-    public void transferFunds(int amount, int targetAccount) {
-        if (checkingAccount >= amount) {
-            checkingAccount -= amount;
-            System.out.println("You have transfer " + amount + " to the account " + targetAccount);
-        } else {
-            System.out.println("Not enough founds to transfer.");
+    // Helper method to log transactions to a file
+    private void logTransaction(String transaction) {
+        try (FileWriter writer = new FileWriter("user_data.txt", true)) {
+            writer.write(transaction + " | Checking Balance: $" + checkingAccount + "\n");
+        } catch (IOException e) {
+            System.out.println("An error occurred while logging the transaction.");
         }
     }
 }
